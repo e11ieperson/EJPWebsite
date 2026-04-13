@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ellie — Engineering Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0a0d12;
+      --surface:   #0f1520;
+      --border:    #1e2d45;
+      --accent:    #e8a030;
+      --accent2:   #4ecdc4;
+      --text:      #d4dce8;
+      --muted:     #5a6a7e;
+      --white:     #f0f4fa;
+      --danger:    #e84040;
+      --grid-line: rgba(78,205,196,0.06);
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-jp:   'Noto Sans JP', sans-serif;
+    }
+
+    /* ── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── GLOBAL BLUEPRINT GRID ──────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 60px;
+      background: rgba(10,13,18,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── LAYOUT HELPERS ─────────────────────────────────── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── SECTION LABEL ──────────────────────────────────── */
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--accent2);
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 60px;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+    .hero-text { padding: 4rem 0; }
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .hero-name .accent { color: var(--accent); }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 500;
+      color: var(--accent2);
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.04em;
+    }
+    .hero-bio {
+      max-width: 560px;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 2.4rem;
+      font-size: 0.88rem;
+    }
+    .hero-jp {
+      font-family: var(--font-jp);
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+      margin-bottom: 2.4rem;
+      font-style: italic;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.4rem;
+    }
+    .badge {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      background: var(--surface);
+    }
+    .badge.hot { border-color: var(--accent); color: var(--accent); }
+    .badge.cool { border-color: var(--accent2); color: var(--accent2); }
+    .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0d12;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: #f0b050; }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+    }
+    .btn-outline:hover { background: rgba(78,205,196,0.1); }
+
+    /* Hero photo */
+    .hero-photo-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-photo-frame {
+      position: relative;
+      width: 320px; height: 380px;
+    }
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute;
+      top: -12px; left: -12px;
+      width: 100%; height: 100%;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      z-index: 0;
+    }
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -12px; right: -12px;
+      width: 100%; height: 100%;
+      border: 1px solid var(--accent2);
+      border-radius: 3px;
+      z-index: 0;
+    }
+    .hero-photo-frame img {
+      position: relative;
+      z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 3px;
+      filter: grayscale(20%) contrast(1.05);
+    }
+    .hero-callout {
+      position: absolute;
+      bottom: -28px; left: -28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.7rem 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    /* ── STAT BAR ───────────────────────────────────────── */
+    .stat-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.4rem 0;
+      position: relative; z-index: 1;
+    }
+    .stat-bar-inner {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── ABOUT / ROLES ──────────────────────────────────── */
+    #about {
+      padding: 7rem 0;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .section-heading {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .section-heading .accent { color: var(--accent); }
+    .role-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 80px;
+      background: radial-gradient(circle at top right, rgba(232,160,48,0.07), transparent 70%);
+    }
+    .role-title {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+    .role-org {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.7rem;
+    }
+    .role-desc {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .role-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+    .role-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      background: rgba(232,160,48,0.1);
+      border: 1px solid rgba(232,160,48,0.25);
+      color: var(--accent);
+      border-radius: 2px;
+    }
+    .about-aside { }
+    .aside-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      border-radius: 2px;
+    }
+    .aside-block h4 {
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    .aside-block p {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .aside-jp {
+      font-family: var(--font-jp);
+      font-size: 1.2rem;
+      color: var(--accent2);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .aside-jp-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .arm-img {
+      width: 100%;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+      object-fit: cover;
+      max-height: 200px;
+    }
+
+    /* ── FEATURED PROJECT: DIFFERENTIAL WRIST ───────────── */
+    #wrist {
+      padding: 7rem 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .wrist-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+    .wrist-intro p {
+      font-size: 0.87rem;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .highlight-box {
+      background: rgba(232,160,48,0.07);
+      border: 1px solid rgba(232,160,48,0.3);
+      border-radius: 2px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .highlight-box .hb-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .highlight-box p {
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+    .failure-box {
+      background: rgba(232,64,64,0.07);
+      border: 1px solid rgba(232,64,64,0.3);
+      border-radius: 2px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .failure-box .hb-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--danger);
+      margin-bottom: 0.4rem;
+    }
+    .failure-box p { font-size: 0.82rem; color: var(--text); }
+    .success-box {
+      background: rgba(78,205,196,0.07);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 2px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .success-box .hb-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.4rem;
+    }
+    .success-box p { font-size: 0.82rem; color: var(--text); }
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: var(--border);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem; top: 6px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .tl-item.active::before { background: var(--accent); border-color: var(--accent); }
+    .tl-item.fail::before   { background: var(--danger);  border-color: var(--danger);  }
+    .tl-date {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.2rem;
+    }
+    .tl-title {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .tl-desc { font-size: 0.8rem; color: var(--text); line-height: 1.7; }
+
+    /* Photo gallery */
+    .wrist-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      background: var(--bg);
+    }
+    .gallery-item.span2 { grid-column: span 2; aspect-ratio: 16/9; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s, filter 0.4s;
+      filter: grayscale(15%) brightness(0.9);
+    }
+    .gallery-item:hover img { transform: scale(1.04); filter: grayscale(0%) brightness(1); }
+    .gallery-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(10,13,18,0.9));
+      padding: 1.5rem 0.8rem 0.6rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+    /* ── PAST PROJECTS ───────────────────────────────────── */
+    #projects {
+      padding: 7rem 0;
+    }
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 3rem;
+      background: var(--surface);
+    }
+    .project-card.reverse { direction: rtl; }
+    .project-card.reverse > * { direction: ltr; }
+    .project-img-wrap {
+      overflow: hidden;
+      min-height: 340px;
+    }
+    .project-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+      filter: grayscale(10%);
+    }
+    .project-card:hover .project-img-wrap img { transform: scale(1.04); }
+    .project-content {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .project-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.6rem;
+    }
+    .project-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .project-desc {
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1.4rem;
+    }
+    .project-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .spec {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.7rem;
+      border-radius: 2px;
+    }
+    .spec-key {
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+    }
+    .spec-val {
+      font-size: 0.78rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+    /* Drone sub-gallery */
+    .drone-sub {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .drone-sub-item {
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      aspect-ratio: 1;
+    }
+    .drone-sub-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .drone-sub-item:hover img { transform: scale(1.06); }
+
+    /* ── SKILLS CHART ────────────────────────────────────── */
+    #skills {
+      padding: 7rem 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .skills-inner {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .skills-intro p {
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .chart-wrap {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2rem 2rem 1.5rem;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 1px;
+    }
+    .chart-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 150px 1fr 60px;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    .bar-label {
+      font-size: 0.72rem;
+      color: var(--text);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .bar-track {
+      height: 20px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 1px;
+      animation: barGrow 1.2s ease-out forwards;
+      transform-origin: left;
+    }
+    @keyframes barGrow {
+      from { width: 0 !important; }
+    }
+    .bar-level {
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: right;
+    }
+    .bar-divider {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.8rem 0 0.3rem;
+      grid-column: 1 / -1;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── LIGHTBOX ────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    .footer-name {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .footer-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; }
+    .footer-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    /* ── SCROLL ANIMATIONS ───────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner,
+      .about-grid,
+      .wrist-header,
+      .project-card,
+      .skills-inner { grid-template-columns: 1fr; }
+      .project-card.reverse { direction: ltr; }
+      .hero-photo-wrap { display: none; }
+      .wrist-gallery { grid-template-columns: 1fr 1fr; }
+      .gallery-item.span2 { grid-column: span 1; aspect-ratio: 4/3; }
+      .bar-row { grid-template-columns: 120px 1fr 55px; }
+      nav { padding: 0 1.5rem; }
+      .nav-links { gap: 1rem; }
+    }
+    @media (max-width: 600px) {
+      .wrist-gallery { grid-template-columns: 1fr; }
+      .project-specs { grid-template-columns: 1fr; }
+      .drone-sub { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">E<span>.</span>L</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#wrist">Diff. Wrist</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-text fade-in">
+          <p class="hero-eyebrow">// Aerospace Engineering · Texas A&amp;M University</p>
+          <h1 class="hero-name">Ellie<br><span class="accent">Engineers</span><br>the Future.</h1>
+          <p class="hero-title">Arm Team Lead &amp; Project Manager — KARURA</p>
+          <p class="hero-bio">
+            Sophomore aerospace engineering student building robotic arms, flying drones, and machining the future —
+            one cycloidal gear at a time. From CAN bus firmware to 501(c)(3) nonprofit management,
+            I work at the intersection of mechanical design, embedded systems, and team leadership.
+          </p>
+          <p class="hero-jp">
+            「エンジニアリングは言語だ — 私は二つの言語を学んでいる。」<br>
+            <span class="aside-jp-sub">"Engineering is a language — I am learning two of them."</span>
+          </p>
+          <div class="hero-badges">
+            <span class="badge hot">SolidWorks</span>
+            <span class="badge hot">Fusion 360</span>
+            <span class="badge cool">CAN Bus</span>
+            <span class="badge cool">ROS 2</span>
+            <span class="badge">Waterjet</span>
+            <span class="badge">Cycloidal Gears</span>
+            <span class="badge cool">PCB Design</span>
+            <span class="badge">501(c)(3)</span>
+          </div>
+          <div class="cta-row">
+            <a href="#wrist" class="btn btn-primary">Featured Project ↓</a>
+            <a href="#skills" class="btn btn-outline">Skills Chart →</a>
+          </div>
+        </div>
+        <div class="hero-photo-wrap fade-in" style="animation-delay:0.2s">
+          <div class="hero-photo-frame">
+            <img src="BioPic.png" alt="Ellie — Aerospace Engineering Student" />
+            <div class="hero-callout">Arm Team Lead · KARURA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAT BAR -->
+  <div class="stat-bar">
+    <div class="container">
+      <div class="stat-bar-inner">
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Years on KARURA</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">CNC'd Al Gears</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">CF-Printed Gears</span></div>
+        <div class="stat"><span class="stat-num">501(c)(3)</span><span class="stat-label">Nonprofit Founded</span></div>
+        <div class="stat"><span class="stat-num">N2</span><span class="stat-label">FAA Drone License</span></div>
+        <div class="stat"><span class="stat-num">日本語</span><span class="stat-label">Learning Japanese</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT / ROLES -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="fade-in">
+          <p class="section-tag">// 01 — About</p>
+          <h2 class="section-heading">Engineer.<br>Leader.<br><span class="accent">Builder.</span></h2>
+          <p style="font-size:0.85rem;line-height:1.9;color:var(--text);margin-bottom:2rem;">
+            I'm an aerospace engineering student at Texas A&amp;M University with a passion for making
+            things that actually move — gears, joints, drones, and ideas. I joined the KARURA robotic arm
+            team as a freshman and haven't looked back. Two years in, I lead engineering design, hardware
+            development, and organizational management for the team, while taking on coursework in
+            aerodynamics, dynamics, and numerical methods.
+          </p>
+
+          <div class="role-card">
+            <div class="role-title">Arm Team Lead</div>
+            <div class="role-org">KARURA Robotic Arm · ArmEJP Team</div>
+            <div class="role-desc">
+              Lead all mechanical design and engineering development on the KARURA robotic arm.
+              Responsible for drivetrain architecture, cycloidal gear design and machining, CAN bus
+              motor control systems, and cross-functional integration with firmware and electronics teams.
+            </div>
+            <div class="role-tags">
+              <span class="role-tag">SolidWorks</span>
+              <span class="role-tag">CNC Machining</span>
+              <span class="role-tag">CAN Bus</span>
+              <span class="role-tag">Cycloidal Gears</span>
+              <span class="role-tag">ROS 2</span>
+            </div>
+          </div>
+
+          <div class="role-card" style="border-left-color: var(--accent2);">
+            <div class="role-title" style="color:var(--accent2);">Project Manager</div>
+            <div class="role-org">KARURA Robotic Arm · ArmEJP Team</div>
+            <div class="role-desc">
+              Manage team operations, sponsor communications, and organizational development.
+              Successfully structured KARURA as a 501(c)(3) nonprofit to expand funding and
+              partnerships. Coordinate with international teammates, driving personal study of
+              Japanese to bridge communication gaps.
+            </div>
+            <div class="role-tags" style="">
+              <span class="role-tag" style="background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--accent2);">501(c)(3) Nonprofit</span>
+              <span class="role-tag" style="background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--accent2);">Sponsor Relations</span>
+              <span class="role-tag" style="background:rgba(78,205,196,0.1);border-color:rgba(78,205,196,0.25);color:var(--accent2);">日本語</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-aside fade-in" style="animation-delay:0.15s">
+          <div class="aside-block">
+            <h4>// Machining & Fabrication</h4>
+            <p>
+              Machined the entire KARURA arm in-house. This includes <strong style="color:var(--accent);">3 cycloidal gear
+              reduction units milled from aluminum</strong> on the CNC, and <strong style="color:var(--accent);">3 additional
+              sets printed from carbon-fiber reinforced filament</strong>. Also proficient with waterjet cutting,
+              laser engraving, and manual machining processes.
+            </p>
+            <img src="Arm.png" alt="KARURA Robotic Arm" class="arm-img" />
+          </div>
+
+          <div class="aside-block">
+            <h4>// PCB Design</h4>
+            <p>
+              Designing custom PCBs for the KARURA arm — a natural extension of drone-building experience
+              where hardware literacy is essential. Currently learning schematic capture and layout tools
+              to reduce wiring complexity and improve system reliability.
+            </p>
+          </div>
+
+          <div class="aside-block">
+            <h4>// 日本語を学んでいる</h4>
+            <span class="aside-jp">チームのために言語を学ぶ。</span>
+            <span class="aside-jp-sub">"Learning the language for the team." — Studying Japanese to communicate with KARURA teammates abroad, using grammar study and song lyrics as learning tools.</span>
+          </div>
+
+          <div class="aside-block" style="border-color:var(--accent);background:rgba(232,160,48,0.04);">
+            <h4>// AERO Coursework</h4>
+            <p>
+              AERO 301 Theoretical Aerodynamics · AERO 310 Rigid Body Dynamics ·
+              AERO 222 Numerical Methods · AERO 220 · AERO 214 — building analytical
+              foundations to complement hands-on engineering work.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED: DIFFERENTIAL WRIST -->
+  <section id="wrist">
+    <div class="container">
+      <p class="section-tag">// 02 — Featured Project</p>
+      <div class="wrist-header">
+        <div class="wrist-intro fade-in">
+          <h2 class="section-heading">Differential<br><span class="accent">Wrist</span><br>Assembly</h2>
+          <p>
+            The differential wrist is the most mechanically complex subassembly on the KARURA arm —
+            and my longest-running engineering project. A differential wrist uses two actuators
+            working in opposition to achieve both pitch and roll simultaneously from a single compact
+            package, making it ideal for a high-DOF robotic manipulator.
+          </p>
+
+          <div class="highlight-box">
+            <div class="hb-label">// Origin — Freshman Year, 2024</div>
+            <p>Joined KARURA as a freshman and immediately took on the differential wrist as a primary design challenge.
+               Built the first version from scratch, learning CAD-to-fabrication workflows and drivetrain theory on the fly.</p>
+          </div>
+
+          <div class="failure-box">
+            <div class="hb-label">// Competition Failure</div>
+            <p>At competition, the V1 wrist failed under load. A hard lesson — but the failure data was invaluable.
+               Structural analysis of the failure mode directly informed every design decision in the revision.</p>
+          </div>
+
+          <div class="success-box">
+            <div class="hb-label">// Revamped Design — 2025</div>
+            <p>The 2025 redesign addresses every failure point from V1. Improved capstan drive geometry,
+               revised cycloidal gear tolerances from lessons on the milled aluminum units, and a cleaner
+               structural load path. This version is competition-ready.</p>
+          </div>
+        </div>
+
+        <div class="fade-in" style="animation-delay:0.15s">
+          <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:1.5rem;letter-spacing:0.04em;">Project Timeline</h3>
+          <div class="timeline">
+            <div class="tl-item active">
+              <div class="tl-date">Fall 2023 — Freshman Year</div>
+              <div class="tl-title">Joined KARURA · First Assignment</div>
+              <div class="tl-desc">Onboarded as a freshman member. Took on the differential wrist as my first major mechanical design challenge. No prior arm experience — learned SolidWorks and differential drive theory simultaneously.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">Spring 2024</div>
+              <div class="tl-title">V1 Design &amp; Fabrication</div>
+              <div class="tl-desc">Completed first full design iteration — capstan cable routing, cycloidal reduction, and structural housing. Fabricated with limited machining access.</div>
+            </div>
+            <div class="tl-item fail">
+              <div class="tl-date">Competition 2024</div>
+              <div class="tl-title">⚠ In-Field Failure</div>
+              <div class="tl-desc">Wrist assembly failed at competition under dynamic load. Part identified as a structural weak point in the cable routing system and gear interface. Team placed but the failure was a defining moment.</div>
+            </div>
+            <div class="tl-item active">
+              <div class="tl-date">Fall 2024 — Spring 2025</div>
+              <div class="tl-title">V2 — Full Redesign</div>
+              <div class="tl-desc">Complete design-from-scratch revision. New capstan geometry, refined cycloidal tolerance stack, improved load path. Machined aluminum gears on the CNC and printed CF filament backups.</div>
+            </div>
+            <div class="tl-item active">
+              <div class="tl-date">2025 — Present</div>
+              <div class="tl-title">Competition-Ready Assembly</div>
+              <div class="tl-desc">V2 wrist integrated into full arm. Currently undergoing final validation and testing ahead of the next competition season.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Gallery -->
+      <div class="wrist-gallery fade-in">
+        <div class="gallery-item span2" onclick="openLightbox('DifferentialWrist2025.png')">
+          <img src="DifferentialWrist2025.png" alt="Differential Wrist 2025 Assembly" />
+          <div class="gallery-caption">2025 Assembly — Competition Build</div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox('DifferentialWristCAPSTAN.png')">
+          <img src="DifferentialWristCAPSTAN.png" alt="Capstan Drive Detail" />
+          <div class="gallery-caption">Capstan Drive Detail</div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox('DifferentialWristCYCLOIDV1.png')">
+          <img src="DifferentialWristCYCLOIDV1.png" alt="Cycloidal Gear V1" />
+          <div class="gallery-caption">Cycloidal — V1</div>
+        </div>
+        <div class="gallery-item" onclick="openLightbox('DifferentialWristCYCLOIDV2.png')">
+          <img src="DifferentialWristCYCLOIDV2.png" alt="Cycloidal Gear V2" />
+          <div class="gallery-caption">Cycloidal — V2</div>
+        </div>
+        <div class="gallery-item span2" onclick="openLightbox('DifferentialWristCYCLOIDFinal.png')">
+          <img src="DifferentialWristCYCLOIDFinal.png" alt="Cycloidal Gear Final" />
+          <div class="gallery-caption">Cycloidal — Final Production</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAST PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-tag">// 03 — Past Projects</p>
+      <h2 class="section-heading" style="margin-bottom:3rem;">Other <span class="accent">Builds.</span></h2>
+
+      <!-- Drone Build -->
+      <div class="project-card fade-in">
+        <div class="project-img-wrap">
+          <img src="Drone.png" alt="Rotor Riots Drone Build" />
+        </div>
+        <div class="project-content">
+          <div class="project-label">// Personal Build · FPV Racing</div>
+          <h3 class="project-title">Rotor Riots<br>Drone Build</h3>
+          <p class="project-desc">
+            Built a full FPV freestyle drone from scratch using the Rotor Riot kit —
+            my entry point into hands-on electronics and hardware work before joining KARURA.
+            Covered motor selection, ESC configuration, flight controller tuning (PID loops),
+            frame assembly, and analog video transmission. Flew with full FPV goggles
+            and a dedicated radio transmitter, and earned an FAA Part 107 drone license in the process.
+            This project directly informed my approach to wiring, PCB thinking,
+            and embedded motor control on the robotic arm.
+          </p>
+          <div class="project-specs">
+            <div class="spec"><span class="spec-key">Platform</span><span class="spec-val">Rotor Riots Kit</span></div>
+            <div class="spec"><span class="spec-key">License</span><span class="spec-val">FAA Part 107</span></div>
+            <div class="spec"><span class="spec-key">Video</span><span class="spec-val">FPV Analog</span></div>
+            <div class="spec"><span class="spec-key">Skills Used</span><span class="spec-val">ESC, PID, Soldering</span></div>
+          </div>
+          <div class="drone-sub">
+            <div class="drone-sub-item"><img src="DroneTransmitter.png" alt="Drone Transmitter" /></div>
+            <div class="drone-sub-item"><img src="DroneHeadset.png" alt="FPV Goggles" /></div>
+            <div class="drone-sub-item"><img src="DroneLicense.png" alt="FAA License" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rover -->
+      <div class="project-card reverse fade-in">
+        <div class="project-img-wrap">
+          <img src="Rover.png" alt="Rover Project" />
+        </div>
+        <div class="project-content">
+          <div class="project-label">// Team Project · Robotics</div>
+          <h3 class="project-title">Rover<br>Platform</h3>
+          <p class="project-desc">
+            Contributed to a ground rover platform — applying mechanical and systems
+            knowledge from coursework and the KARURA project in a different mobility context.
+            Work included structural design review, drivetrain considerations, and cross-team
+            collaboration — skills that translate directly from arm to rover work.
+          </p>
+          <div class="project-specs">
+            <div class="spec"><span class="spec-key">Type</span><span class="spec-val">Ground Rover</span></div>
+            <div class="spec"><span class="spec-key">Role</span><span class="spec-val">Mechanical / Systems</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS CHART -->
+  <section id="skills">
+    <div class="container">
+      <div class="skills-inner">
+        <div class="fade-in">
+          <p class="section-tag">// 04 — Skills</p>
+          <h2 class="section-heading">What I<br><span class="accent">Know.</span></h2>
+          <p>Skills developed across coursework, competition robotics, personal builds, and two years of
+             hands-on manufacturing and project management.</p>
+          <p>Rating reflects practical, applied comfort — not just familiarity.</p>
+        </div>
+        <div class="chart-wrap fade-in" style="animation-delay:0.15s">
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#e8a030;"></div> Expert</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#4ecdc4;"></div> Intermediate</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#5a6a7e;"></div> Beginner</div>
+          </div>
+          <div class="chart-bars" id="skillBars">
+
+            <div class="bar-divider">Expert</div>
+
+            <div class="bar-row">
+              <span class="bar-label">SolidWorks</span>
+              <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#e8a030,#f0c060);"></div></div>
+              <span class="bar-level" style="color:#e8a030;">Expert</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Fusion 360</span>
+              <div class="bar-track"><div class="bar-fill" style="width:92%;background:linear-gradient(90deg,#e8a030,#f0c060);"></div></div>
+              <span class="bar-level" style="color:#e8a030;">Expert</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Project Mgmt.</span>
+              <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#e8a030,#f0c060);"></div></div>
+              <span class="bar-level" style="color:#e8a030;">Expert</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Laser Cutting</span>
+              <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#e8a030,#f0c060);"></div></div>
+              <span class="bar-level" style="color:#e8a030;">Expert</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Waterjet</span>
+              <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#e8a030,#f0c060);"></div></div>
+              <span class="bar-level" style="color:#e8a030;">Expert</span>
+            </div>
+
+            <div class="bar-divider">Intermediate</div>
+
+            <div class="bar-row">
+              <span class="bar-label">CNC Machining</span>
+              <div class="bar-track"><div class="bar-fill" style="width:62%;background:linear-gradient(90deg,#4ecdc4,#80ded9);"></div></div>
+              <span class="bar-level" style="color:#4ecdc4;">Intermed.</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">CAM</span>
+              <div class="bar-track"><div class="bar-fill" style="width:58%;background:linear-gradient(90deg,#4ecdc4,#80ded9);"></div></div>
+              <span class="bar-level" style="color:#4ecdc4;">Intermed.</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Wiring</span>
+              <div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#4ecdc4,#80ded9);"></div></div>
+              <span class="bar-level" style="color:#4ecdc4;">Intermed.</span>
+            </div>
+
+            <div class="bar-divider">Beginner</div>
+
+            <div class="bar-row">
+              <span class="bar-label">Python</span>
+              <div class="bar-track"><div class="bar-fill" style="width:28%;background:linear-gradient(90deg,#5a6a7e,#7a8a9e);"></div></div>
+              <span class="bar-level" style="color:#7a8a9e;">Beginner</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">PCB Design</span>
+              <div class="bar-track"><div class="bar-fill" style="width:24%;background:linear-gradient(90deg,#5a6a7e,#7a8a9e);"></div></div>
+              <span class="bar-level" style="color:#7a8a9e;">Beginner</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Rhino</span>
+              <div class="bar-track"><div class="bar-fill" style="width:22%;background:linear-gradient(90deg,#5a6a7e,#7a8a9e);"></div></div>
+              <span class="bar-level" style="color:#7a8a9e;">Beginner</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Welding</span>
+              <div class="bar-track"><div class="bar-fill" style="width:20%;background:linear-gradient(90deg,#5a6a7e,#7a8a9e);"></div></div>
+              <span class="bar-level" style="color:#7a8a9e;">Beginner</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">日本語</span>
+              <div class="bar-track"><div class="bar-fill" style="width:16%;background:linear-gradient(90deg,#5a6a7e,#7a8a9e);"></div></div>
+              <span class="bar-level" style="color:#7a8a9e;">Beginner</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Ellie</div>
+    <div class="footer-sub">Aerospace Engineering · Texas A&amp;M · KARURA Arm Team Lead</div>
+    <div class="footer-links">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#wrist">Diff. Wrist</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+    </div>
+    <div class="footer-copy">Built by Ellie · Aerospace Engineering Portfolio · 2025</div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕ Close</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    // ── Scroll fade-in ──────────────────────────────────────
+    const faders = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    faders.forEach(el => observer.observe(el));
+
+    // ── Lightbox ────────────────────────────────────────────
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ── Bar chart animate on scroll ─────────────────────────
+    const chartWrap = document.querySelector('.chart-wrap');
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
+            bar.style.animationDelay = (i * 0.06) + 's';
+          });
+          barObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    if (chartWrap) barObserver.observe(chartWrap);
+  </script>
+</body>
+</html>
